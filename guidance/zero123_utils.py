@@ -285,6 +285,42 @@ class Zero123(nn.Module):
         return latents # [B, 4, 32, 32] Latent space image
 
 
+def generate_zero123_images(image, zero123):
+    import cv2
+    import argparse
+    import numpy as np
+    import matplotlib.pyplot as plt
+
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument('input', type=str)
+    parser.add_argument('--fp16', action='store_true', help="use float16 for training") # no use now, can only run in fp32
+
+    parser.add_argument('--polar', type=float, default=0, help='delta polar angle in [-90, 90]')
+    parser.add_argument('--azimuth', type=float, default=0, help='delta azimuth angle in [-180, 180]')
+    parser.add_argument('--radius', type=float, default=0, help='delta camera radius multiplier in [-0.5, 0.5]')
+
+    opt = parser.parse_args()
+
+    device = torch.device('cuda')
+
+    print(f'[INFO] loading image from {opt.input} ...')
+    image = cv2.imread(opt.input, cv2.IMREAD_UNCHANGED)
+    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    image = cv2.resize(image, (256, 256), interpolation=cv2.INTER_AREA)
+    image = image.astype(np.float32) / 255.0
+    image = torch.from_numpy(image).permute(2, 0, 1).unsqueeze(0).contiguous().to(device)
+
+    print(f'[INFO] loading model ...')
+    zero123 = Zero123(device, opt.fp16, opt=opt)
+
+    print(f'[INFO] running model ...')
+    outputs = zero123(image, polar=opt.polar, azimuth=opt.azimuth, radius=opt.radius)
+    
+    # plt.imshow(outputs[0])
+    # plt.show()
+
+
 if __name__ == '__main__':
     import cv2
     import argparse
