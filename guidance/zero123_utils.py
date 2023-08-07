@@ -316,12 +316,12 @@ def generate_zero123_images(image, zero123):
 
     print(f'[INFO] running model ...')
     outputs = zero123(image, polar=opt.polar, azimuth=opt.azimuth, radius=opt.radius)
-    
+
     # plt.imshow(outputs[0])
     # plt.show()
 
 
-if __name__ == '__main__':
+def generate_zero123_images(input, polar, azimuth, radius, zero123Model=None):
     import cv2
     import argparse
     import numpy as np
@@ -337,6 +337,11 @@ if __name__ == '__main__':
     parser.add_argument('--radius', type=float, default=0, help='delta camera radius multiplier in [-0.5, 0.5]')
 
     opt = parser.parse_args()
+    opt.input = input
+    opt.fp16 = False
+    opt.azimuth = azimuth
+    opt.polar = polar 
+    opt.radius = radius
 
     device = torch.device('cuda')
 
@@ -352,5 +357,4 @@ if __name__ == '__main__':
 
     print(f'[INFO] running model ...')
     outputs = zero123(image, polar=opt.polar, azimuth=opt.azimuth, radius=opt.radius)
-    plt.imshow(outputs[0])
-    plt.show()
+    return outputs
