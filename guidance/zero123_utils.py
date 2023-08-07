@@ -19,7 +19,7 @@ from ldm.util import instantiate_from_config
 
 
 # load model
-def load_model_from_config(config, ckpt, device, vram_O=False, verbose=False):
+def load_model_from_config(config, ckpt, device, vram_O=False, verbose=False, ):
 
     pl_sd = torch.load(ckpt, map_location='cpu')
 
@@ -244,6 +244,7 @@ class Zero123(nn.Module):
 
         T = torch.tensor([math.radians(polar), math.sin(math.radians(azimuth)), math.cos(math.radians(azimuth)), radius])
         T = T[None, None, :].to(self.device)
+        # import pdb; pdb.set_trace()
 
         cond = {}
         clip_emb = self.model.cc_projection(torch.cat([embeddings['c_crossattn'] if c_crossattn is None else c_crossattn, T], dim=-1))
@@ -285,7 +286,7 @@ class Zero123(nn.Module):
         return latents # [B, 4, 32, 32] Latent space image
 
 
-def generate_zero123_images(image, zero123):
+def generate_zero123_images(image, zero123=None):
     import cv2
     import argparse
     import numpy as np
@@ -356,5 +357,6 @@ def generate_zero123_images(input, polar, azimuth, radius, zero123Model=None):
     zero123 = Zero123(device, opt.fp16, opt=opt)
 
     print(f'[INFO] running model ...')
-    outputs = zero123(image, polar=opt.polar, azimuth=opt.azimuth, radius=opt.radius)
+    c_crossattn, c_concat = zero123.get_img_embeds(image)
+    outputs = zero123(image, polar=opt.polar, azimuth=opt.azimuth, radius=opt.radius, c_crossattn=c_crossattn[0], c_concat=c_concat[0])
     return outputs
