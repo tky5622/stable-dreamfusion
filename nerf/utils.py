@@ -579,6 +579,7 @@ class Trainer(object):
                 valid_gt_depth = gt_depth[gt_mask] # [B,]
                 valid_pred_depth = pred_depth[:, 0][gt_mask] # [B,]
                 lambda_depth = self.opt.lambda_depth * min(1, self.global_step / self.opt.iters)
+                # import pdb; pdb.set_trace()
                 loss = loss + lambda_depth * (1 - self.pearson(valid_pred_depth, valid_gt_depth))
 
                 # # scale-invariant
