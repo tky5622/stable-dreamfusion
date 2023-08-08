@@ -282,8 +282,8 @@ def preprocess_image(path=None, size=256, border_ratio=0.2, recenter=True, dont_
         final_rgba = carved_image
         final_depth = depth
         final_normal = normal
-    
-    return cv2.cvtColor(final_rgba, cv2.COLOR_RGBA2BGRA), cv2.cvtColor(final_depth, cv2.COLOR_RGBA2BGRA), cv2.cvtColor(final_normal, cv2.COLOR_RGBA2BGRA)
+    # import pdb; pdb.set_trace()    
+    return cv2.cvtColor(final_rgba, cv2.COLOR_RGBA2BGRA), final_depth, final_normal
 
     # write output
     cv2.imwrite(out_rgba, cv2.cvtColor(final_rgba, cv2.COLOR_RGBA2BGRA))
