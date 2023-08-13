@@ -283,7 +283,13 @@ def preprocess_image(path=None, size=256, border_ratio=0.2, recenter=True, dont_
         final_depth = depth
         final_normal = normal
     # import pdb; pdb.set_trace()    
-    return cv2.cvtColor(final_rgba, cv2.COLOR_RGBA2BGRA), final_depth, final_normal
+
+    # cv2.imwrite('./test.png', final_rgba)
+    # cv2.imwrite('./test2.png', cv2.cvtColor(final_rgba, cv2.COLOR_RGBA2BGRA))
+
+
+
+    return final_rgba, final_depth, final_normal
 
     # write output
     cv2.imwrite(out_rgba, cv2.cvtColor(final_rgba, cv2.COLOR_RGBA2BGRA))
