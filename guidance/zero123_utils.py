@@ -53,10 +53,23 @@ def load_model_from_config(config, ckpt, device, vram_O=False, verbose=False, ):
 
     return model
 
+# TODO: should be imported from another file as repitetive
+import sys
+import os
+# print(sys.path)
+# sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+path_to_api = os.environ.get('DIRECTRY_PATH')
+
+# print(f"{path_to_api}/api/")
+# sys.path.append(f"{path_to_api}/api/")
+# sys.path.append(f"{path_to_api}/api/common/libs")
+# sys.path.append(path_to_api)
+
+
 class Zero123(nn.Module):
     def __init__(self, device, fp16,
-                 config='./pretrained/zero123/sd-objaverse-finetune-c_concat-256.yaml',
-                 ckpt='./pretrained/zero123/zero123-xl.ckpt', vram_O=False, t_range=[0.02, 0.98], opt=None):
+                 config=f'{path_to_api}/api/common/libs/stable_dreamfusion/pretrained/zero123/sd-objaverse-finetune-c_concat-256.yaml',
+                 ckpt=f'{path_to_api}/api/common/libs/stable_dreamfusion/pretrained/zero123/zero123-xl.ckpt', vram_O=False, t_range=[0.02, 0.98], opt=None):
         super().__init__()
 
         self.device = device
