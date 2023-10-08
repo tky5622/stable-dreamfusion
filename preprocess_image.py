@@ -215,6 +215,8 @@ def preprocess_image(path=None, size=256, border_ratio=0.2, recenter=True, dont_
     parser.add_argument('--border_ratio', default=0.2, type=float, help="output border ratio")
     parser.add_argument('--recenter', type=bool, default=True, help="recenter, potentially not helpful for multiview zero123")
     parser.add_argument('--dont_recenter', dest='recenter', action='store_false')
+    parser.add_argument('--port', default=0.2)
+
     opt = parser.parse_args()
     opt.path = path
     opt.size = size
