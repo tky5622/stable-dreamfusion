@@ -61,7 +61,7 @@ import os
 # print(sys.path)
 # sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 path_to_api = os.environ.get('DIRECTRY_PATH')
-
+current_path = {os.path.dirname(os.path.abspath(__file__))}
 
 class DPT():
     def __init__(self, task='depth', device='cuda'):
@@ -72,7 +72,7 @@ class DPT():
         from dpt import DPTDepthModel
 
         if task == 'depth':
-            path = f'{path_to_api}/api/common/libs/stable_dreamfusion/pretrained/omnidata/omnidata_dpt_depth_v2.ckpt'
+            path = f'{current_path}/pretrained/omnidata/omnidata_dpt_depth_v2.ckpt'
             self.model = DPTDepthModel(backbone='vitb_rn50_384')
             self.aug = transforms.Compose([
                 transforms.Resize((384, 384)),
@@ -81,7 +81,7 @@ class DPT():
             ])
 
         else: # normal
-            path = f'{path_to_api}/api/common/libs/stable_dreamfusion/pretrained/omnidata/omnidata_dpt_normal_v2.ckpt'
+            path = f'{current_path}/pretrained/omnidata/omnidata_dpt_normal_v2.ckpt'
             self.model = DPTDepthModel(backbone='vitb_rn50_384', num_channels=3)
             self.aug = transforms.Compose([
                 transforms.Resize((384, 384)),
